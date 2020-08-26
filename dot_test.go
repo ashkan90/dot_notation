@@ -16,7 +16,8 @@ type g struct {
 	Customer struct {
 		Details struct {
 			Profile struct {
-				Name string
+				Name     string
+				FullName string
 			}
 		}
 	}
@@ -27,31 +28,34 @@ func TestNotate(t *testing.T) {
 		Customer: struct {
 			Name    string
 			Surname string
-		}{ Name: "Emirhan", Surname: "Ataman" },
+		}{Name: "Emirhan", Surname: "Ataman"},
 	}
 
 	ng := g{
-		Customer: struct{
-			Details struct{
-				Profile struct{
-					Name string
+		Customer: struct {
+			Details struct {
+				Profile struct {
+					Name     string
+					FullName string
 				}
 			}
 		}{
-			Details: struct{
-				Profile struct{
-					Name string
+			Details: struct {
+				Profile struct {
+					Name     string
+					FullName string
 				}
 			}{
-				Profile: struct{
-					Name string
-				}{ Name: "Emirhan" }}},
+				Profile: struct {
+					Name     string
+					FullName string
+				}{Name: "Emirhan", FullName: "Emirhan Ataman"}}},
 	}
 
 	mapExample := map[string]interface{}{
 		"Name": "Emirhan",
 		"Details": map[string]interface{}{
-			"Name": "My Company",
+			"Name":    "My Company",
 			"Address": "Company address",
 			"MuchDetails": map[string]interface{}{
 				"Detail": "test",
@@ -61,13 +65,13 @@ func TestNotate(t *testing.T) {
 	mapExpected := mapExample
 
 	nExpected := "Ataman"
-	ngExpected := "Emirhan"
+	ngExpected := "Emirhan Ataman"
 
-	if  notate := Notate(n, "Customer.Surname"); notate != nExpected{
+	if notate := Notate(n, "Customer.Surname"); notate != nExpected {
 		t.Errorf("Notate(...) = %q, expected = %q", notate, nExpected)
 	}
 
-	if notate := Notate(ng, "Customer.Details.Profile.Name"); notate != ngExpected {
+	if notate := Notate(ng, "Customer.Details.Profile.FullName"); notate != ngExpected {
 		t.Errorf("Notate(...) = %q, expected = %q", notate, ngExpected)
 	}
 
@@ -76,7 +80,6 @@ func TestNotate(t *testing.T) {
 
 	}
 }
-
 
 func mapEqual(comp1 interface{}, comp2 interface{}) bool {
 	return reflect.DeepEqual(comp1, comp2)

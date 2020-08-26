@@ -28,8 +28,7 @@ func Notate(out interface{}, notation string) interface{} {
 			newNotation = strings.ReplaceAll(notation, notations[0]+".", "")
 		}
 
-
-		return Notate(r.FieldByName(notations[0]).Interface(), newNotation)
+		return Notate(r.FieldByName(strings.Title(notations[0])).Interface(), newNotation)
 	}
 
 	return out
